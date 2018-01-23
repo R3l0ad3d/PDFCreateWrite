@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.github.barteksc.pdfviewer.PDFView;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
     AppCompatEditText etName;
     AppCompatEditText etLocation;
+    PDFView pdfView;
 
     String LOG_TAG = MainActivity.class.getName();
 
@@ -43,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
 
         etName = findViewById(R.id.etName);
         etLocation = findViewById(R.id.etLocation);
+
+        pdfView = findViewById(R.id.pdfView);
 
         checkPermission();
 
@@ -87,14 +91,14 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             myFile.createNewFile();
-            Toast.makeText(this,"File Create Success ......",Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"File Create Success ......"+myFile.toString(),Toast.LENGTH_LONG).show();
         } catch (IOException e) {
             e.printStackTrace();
             Toast.makeText(this,"File Create Failed Error : "+e.getMessage(),Toast.LENGTH_LONG).show();
         }
         //OutputStream output = null;
         OutputStream output = new FileOutputStream(myFile.toString());
-        Log.d("Path : ",output.toString());
+        Log.d("Path : ",myFile.toString());
         //Step 1
         Document document = new Document();
 
@@ -110,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Step 5: Close the document
         document.close();
+        pdfView.fromFile(myFile).load();
     }
 
 
